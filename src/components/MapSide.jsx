@@ -1,12 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
 import { useCustomeContext } from "../context/RoutingContext";
-import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
 
 function MapSide() {
-  const { mapRef, mapContainerRef, markerRef, setOriginMarker,originMarker} =
+  const {  mapContainerRef} =
     useCustomeContext();
-
+    
  
   return (
     <div

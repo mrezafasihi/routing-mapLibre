@@ -1,14 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html, body, #root {
-    height: 100%;
-  }
-  .navbarButton{
-    border: white;
-    border-radius: 10px;
-    background-color: blue;
-    color: white;
-    width: 100px;
-
-  }
+html,
+body,
+#root {
+  height: 100%;
+}
+.navbarButton {
+  border: white;
+  margin: 2px;
+  border-radius: 10px;
+  background-color: blue;
+  color: white;
+  width: 100px;
+  height: 40px;
+}

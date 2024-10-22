@@ -1,23 +1,18 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  createContext,
-  useContext,
-} from "react";
+import { useEffect, useRef, createContext, useContext } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+
+
+
 export const RoutingContext = createContext();
 
 const RoutingContextProvider = ({ children }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  const originMarkerRef=useRef(null)
-  const destinationMarkerRef=useRef(null)
-
+  const originMarkerRef = useRef(null);
+  const destinationMarkerRef = useRef(null);
 
   useEffect(() => {
-   
     mapRef.current = new maplibregl.Map({
       container: mapContainerRef.current,
       style:
@@ -26,17 +21,14 @@ const RoutingContextProvider = ({ children }) => {
       zoom: 13,
     });
     return () => mapRef.current?.remove();
-
-
   }, []);
   return (
     <RoutingContext.Provider
       value={{
-       
         mapContainerRef,
         mapRef,
         originMarkerRef,
-        destinationMarkerRef
+        destinationMarkerRef,
       }}
     >
       {children}
