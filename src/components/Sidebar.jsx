@@ -1,16 +1,18 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import maplibregl from "maplibre-gl";
 
 import { useCustomeContext } from "../context/RoutingContext";
 
 function Sidebar() {
-  const { mapRef, originMarkerRef, destinationMarkerRef} = useCustomeContext();
+  const { mapRef, originMarkerRef, destinationMarkerRef } = useCustomeContext();
   const [markerType, setMarkerType] = useState(null);
+  const [originCoordinate,setOriginCoordinate]=useState([])
+  const [destinationCoordinate,setDestinationCoordinate]=useState([])
   const handleMapClick = (e) => {
     const { lng, lat } = e.lngLat;
 
     if (markerType === "origin") {
-      // ایجاد و تنظیم مارکر مبدأ
+      setOriginCoordinate([lng,lat])
       if (originMarkerRef.current) {
         originMarkerRef.current.setLngLat([lng, lat]);
       } else {
@@ -19,7 +21,7 @@ function Sidebar() {
           .addTo(mapRef.current);
       }
     } else if (markerType === "destination") {
-      // ایجاد و تنظیم مارکر مقصد
+      setDestinationCoordinate([lng,lat])
       if (destinationMarkerRef.current) {
         destinationMarkerRef.current.setLngLat([lng, lat]);
       } else {
@@ -29,9 +31,8 @@ function Sidebar() {
       }
     }
   };
-
   const findRoute = async () => {
-    const apiUrl = `https://map.ir/routes/foot/v1/driving/51.421047,35.732936;51.422185,35.731821?alternatives=true&steps=true&overview=false`; // path parameter
+    const apiUrl = `https://map.ir/routes/foot/v1/driving/${originCoordinate};${destinationCoordinate}1?alternatives=true&steps=true&overview=false`; // path parameter
 
     try {
       const response = await fetch(apiUrl, {

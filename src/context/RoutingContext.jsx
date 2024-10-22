@@ -10,13 +10,10 @@ import "maplibre-gl/dist/maplibre-gl.css";
 export const RoutingContext = createContext();
 
 const RoutingContextProvider = ({ children }) => {
-  const [originMarker, setOriginMarker] = useState();
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const originMarkerRef=useRef(null)
   const destinationMarkerRef=useRef(null)
-  const markerRef = useRef(null);
-  const [DestinationMarker, setDestinationMarker] = useState(null);
 
 
   useEffect(() => {
@@ -35,13 +32,9 @@ const RoutingContextProvider = ({ children }) => {
   return (
     <RoutingContext.Provider
       value={{
-        originMarker,
-        setOriginMarker,
-        DestinationMarker,
-        setDestinationMarker,
+       
         mapContainerRef,
         mapRef,
-        markerRef,
         originMarkerRef,
         destinationMarkerRef
       }}

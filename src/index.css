@@ -4,3 +4,11 @@
 html, body, #root {
     height: 100%;
   }
+  .navbarButton{
+    border: white;
+    border-radius: 10px;
+    background-color: blue;
+    color: white;
+    width: 100px;
+
+  }
