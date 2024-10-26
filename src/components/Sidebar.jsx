@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import maplibregl from "maplibre-gl";
-
-import { useCustomeContext } from "../context/RoutingContext";
+import { useCallback, useEffect, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import { useRoutingContext } from "../context/RoutingContext";
+import { apiKey } from "../constants";
 
 function Sidebar() {
-  const { mapRef, originMarkerRef, destinationMarkerRef } = useCustomeContext();
+  const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
   const [markerType, setMarkerType] = useState(null);
   const [originCoordinate, setOriginCoordinate] = useState([]);
   const [destinationCoordinate, setDestinationCoordinate] = useState([]);
   const [geoRoute, setGeoRoute] = useState(null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleMapClick = (e) => {
+
+  const handleMapClick = useCallback((e) => {
     const { lng, lat } = e.lngLat;
 
     if (markerType === "origin") {
@@ -18,7 +18,7 @@ function Sidebar() {
       if (originMarkerRef.current) {
         originMarkerRef.current.setLngLat([lng, lat]);
       } else {
-        originMarkerRef.current = new maplibregl.Marker({ color: "blue" })
+        originMarkerRef.current = new mapboxgl.Marker({ color: "blue" })
           .setLngLat([lng, lat])
           .addTo(mapRef.current);
       }
@@ -27,13 +27,12 @@ function Sidebar() {
       if (destinationMarkerRef.current) {
         destinationMarkerRef.current.setLngLat([lng, lat]);
       } else {
-        destinationMarkerRef.current = new maplibregl.Marker({ color: "red" })
+        destinationMarkerRef.current = new mapboxgl.Marker({ color: "red" })
           .setLngLat([lng, lat])
           .addTo(mapRef.current);
       }
     }
-  };
-
+  }, [destinationMarkerRef, mapRef, markerType, originMarkerRef]);
   const findRoute = async () => {
     const [originLng, originLat] = originCoordinate;
     const [destinationLng, destinationLat] = destinationCoordinate;
@@ -45,8 +44,7 @@ function Sidebar() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key":
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjllYmU3MzI2MmZjNzljNTkyYTRlMDdiNGY0MTQzODBkNjNhZTU2MzgzZGVhNzBiNDA3NDQ0N2ZkODhmZTIzZmZmNjVlYTA4MGRlN2EzNWE2In0.eyJhdWQiOiIyOTIyNyIsImp0aSI6IjllYmU3MzI2MmZjNzljNTkyYTRlMDdiNGY0MTQzODBkNjNhZTU2MzgzZGVhNzBiNDA3NDQ0N2ZkODhmZTIzZmZmNjVlYTA4MGRlN2EzNWE2IiwiaWF0IjoxNzI5NDE3MTkyLCJuYmYiOjE3Mjk0MTcxOTIsImV4cCI6MTczMTkyMjc5Miwic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.Va5f-rlEybNWDroa_-9bVPt7ENIGUZtUVW55Y5h2p_liC6FHHe1PAkdQ4xECtTKD807vdud3S0naUZtFt4CMDkWexe2_56mNODngaIb3JQ1j8tPjvJqP_a-VtU0ogDsJGcJlz17Q66-hPN-sbp98PNoFQrmHQqIzSO02at70TBbeXe0RPDmNU_TOLcLfb2jf54PQc_vxGH2uIjD-ThYaTIGJnPki_alTqRHbpng75edWEEfO9PDyImaRGfKPEXrIc5cK5-fPFJGxBu9xImilQKggk6-_VPfENUEBPdrSrQZCFgKxLUpHSYPvi0Txls7MTcJqJ85r1FyLy1cQXLODfA",
+          "x-api-key": apiKey,
         },
       });
       if (!response.ok) {
@@ -61,6 +59,7 @@ function Sidebar() {
       console.error("Error fetching route:", error.message);
     }
   };
+
   useEffect(() => {
     if (!mapRef.current) return;
     mapRef.current.on("click", handleMapClick);
@@ -72,7 +71,9 @@ function Sidebar() {
   useEffect(() => {
     if (!geoRoute || !mapRef.current) return;
 
-    const existingSource = mapRef.current.getSource("LineString");
+    const SOURCE_ID = "LineString";
+
+    const existingSource = mapRef.current.getSource(SOURCE_ID);
 
     if (existingSource) {
       existingSource.setData({
@@ -80,7 +81,7 @@ function Sidebar() {
         geometry: geoRoute,
       });
     } else {
-      mapRef.current.addSource("LineString", {
+      mapRef.current.addSource(SOURCE_ID, {
         type: "geojson",
         data: {
           type: "Feature",
@@ -91,7 +92,7 @@ function Sidebar() {
       mapRef.current.addLayer({
         id: "LineString-layer",
         type: "line",
-        source: "LineString",
+        source: SOURCE_ID,
         layout: {
           "line-join": "round",
           "line-cap": "round",
@@ -109,7 +110,7 @@ function Sidebar() {
         onClick={() => {
           setMarkerType("origin");
         }}
-        className="px-6 py-2 min-w-[120px] text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
+        className={`px-6 py-2  text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring`}
       >
         Origin
       </button>
@@ -117,13 +118,13 @@ function Sidebar() {
         onClick={() => {
           setMarkerType("destination");
         }}
-        className="px-6 py-2 min-w-[120px] text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
+        className="px-6 py-2  text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
       >
         Destination
       </button>
       <button
         onClick={findRoute}
-        className="px-6 py-2 min-w-[120px] text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
+        className="px-6 py-2  text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
       >
         Find
       </button>

@@ -1,10 +1,9 @@
-import { useCustomeContext } from "../context/RoutingContext";
+import { useRoutingContext } from "../context/RoutingContext";
 
 function MapSide() {
-  const {  mapContainerRef} =
-    useCustomeContext();
+  const { mapContainerRef} =
+    useRoutingContext();
     
- 
   return (
     <div
       ref={mapContainerRef}
