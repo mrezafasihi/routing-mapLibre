@@ -53,7 +53,6 @@ function Sidebar() {
 
       const data = await response.json();
       setGeoRoute(data.routes[0].geometry);
-      // return data
     } catch (error) {
       alert(error.message);
       console.error("Error fetching route:", error.message);
