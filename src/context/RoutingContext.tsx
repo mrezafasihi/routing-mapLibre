@@ -6,6 +6,7 @@ import React, {
   ReactNode,
   RefObject,
   MutableRefObject,
+  useState,
 } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -15,6 +16,7 @@ interface IRoutingContext {
   mapRef?: MutableRefObject<mapboxgl.Map | undefined>;
   originMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
   destinationMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
+  
 }
 
 export const RoutingContext = createContext<IRoutingContext>({});
@@ -24,6 +26,8 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
   const mapRef = useRef<mapboxgl.Map>();
   const originMarkerRef = useRef<mapboxgl.Marker>();
   const destinationMarkerRef = useRef<mapboxgl.Marker>();
+
+  
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -38,7 +42,7 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
 
     mapRef.current.showTileBoundaries = true;
 
-    return () => mapRef.current?.remove();
+    // return () => mapRef.current?.remove();
   }, []);
   return (
     <RoutingContext.Provider
@@ -47,6 +51,7 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
         mapRef,
         originMarkerRef,
         destinationMarkerRef,
+        
       }}
     >
       {props.children}
