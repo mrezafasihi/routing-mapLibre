@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRoutingContext } from "../../context/RoutingContext";
 import MarkerRange from "./MarkerRange";
 import DeletePolygon from "./DeletePolygon";
 import UploadPolygon from "./UploadPolygon";
 
 function UploadSidebar() {
-  const { mapRef } = useRoutingContext();
-  const [displayUpload, setDisplayUpload] = useState();
+  const { mapRef,displayUpload} = useRoutingContext();
 
  
 
@@ -33,8 +32,8 @@ function UploadSidebar() {
     });
   }, [displayUpload, mapRef]);
   return (
-    <div className="flex flex-col w-[30%] h-screen">
-      <UploadPolygon setDisplayUpload={setDisplayUpload}/>
+    <div className="flex flex-col w-[30%] h-screen space-y-4">
+      <UploadPolygon />
       <MarkerRange/>
       <DeletePolygon/>
     </div>

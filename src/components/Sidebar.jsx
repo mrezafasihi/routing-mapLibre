@@ -10,29 +10,32 @@ function Sidebar() {
   const [destinationCoordinate, setDestinationCoordinate] = useState([]);
   const [geoRoute, setGeoRoute] = useState(null);
 
-  const handleMapClick = useCallback((e) => {
-    const { lng, lat } = e.lngLat;
+  const handleMapClick = useCallback(
+    (e) => {
+      const { lng, lat } = e.lngLat;
 
-    if (markerType === "origin") {
-      setOriginCoordinate([lng, lat]);
-      if (originMarkerRef.current) {
-        originMarkerRef.current.setLngLat([lng, lat]);
-      } else {
-        originMarkerRef.current = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat([lng, lat])
-          .addTo(mapRef.current);
+      if (markerType === "origin") {
+        setOriginCoordinate([lng, lat]);
+        if (originMarkerRef.current) {
+          originMarkerRef.current.setLngLat([lng, lat]);
+        } else {
+          originMarkerRef.current = new mapboxgl.Marker({ color: "blue" })
+            .setLngLat([lng, lat])
+            .addTo(mapRef.current);
+        }
+      } else if (markerType === "destination") {
+        setDestinationCoordinate([lng, lat]);
+        if (destinationMarkerRef.current) {
+          destinationMarkerRef.current.setLngLat([lng, lat]);
+        } else {
+          destinationMarkerRef.current = new mapboxgl.Marker({ color: "red" })
+            .setLngLat([lng, lat])
+            .addTo(mapRef.current);
+        }
       }
-    } else if (markerType === "destination") {
-      setDestinationCoordinate([lng, lat]);
-      if (destinationMarkerRef.current) {
-        destinationMarkerRef.current.setLngLat([lng, lat]);
-      } else {
-        destinationMarkerRef.current = new mapboxgl.Marker({ color: "red" })
-          .setLngLat([lng, lat])
-          .addTo(mapRef.current);
-      }
-    }
-  }, [destinationMarkerRef, mapRef, markerType, originMarkerRef]);
+    },
+    [destinationMarkerRef, mapRef, markerType, originMarkerRef]
+  );
   const findRoute = async () => {
     const [originLng, originLat] = originCoordinate;
     const [destinationLng, destinationLat] = destinationCoordinate;
@@ -97,7 +100,7 @@ function Sidebar() {
           "line-cap": "round",
         },
         paint: {
-          "line-color": "#BF93E4",
+          "line-color": "#ff0080",
           "line-width": 5,
         },
       });

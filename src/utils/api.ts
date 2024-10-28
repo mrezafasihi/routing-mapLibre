@@ -15,9 +15,10 @@ export const checkIsPointInGeofenceRange = async (lng, lat) => {
       }
 
       const data = await response.json();
+      alert("in the range")
       console.log(data);
     } catch (error) {
-      alert(error.message);
+      alert("not in range");
       console.error("Error fetching route:", error.message);
     }
   };

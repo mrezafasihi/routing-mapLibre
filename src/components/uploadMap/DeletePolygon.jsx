@@ -1,7 +1,8 @@
 
 function DeletePolygon() {
+  
   return (
-    <button className="bg-white">DeletePolygon</button>
+    <button className="bg-white" >DeletePolygon</button>
   )
 }
 

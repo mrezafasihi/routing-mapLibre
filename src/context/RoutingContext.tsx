@@ -7,16 +7,20 @@ import React, {
   RefObject,
   MutableRefObject,
   useState,
+  Dispatch,
 } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useLocation } from "react-router-dom";
 
 interface IRoutingContext {
   mapContainerRef?: MutableRefObject<HTMLDivElement | undefined>;
   mapRef?: MutableRefObject<mapboxgl.Map | undefined>;
   originMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
   destinationMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
-  
+  rangeMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
+  displayUpload?: any;
+  setDisplayUpload?: Dispatch<React.SetStateAction<any>>;
 }
 
 export const RoutingContext = createContext<IRoutingContext>({});
@@ -26,8 +30,10 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
   const mapRef = useRef<mapboxgl.Map>();
   const originMarkerRef = useRef<mapboxgl.Marker>();
   const destinationMarkerRef = useRef<mapboxgl.Marker>();
+  const rangeMarkerRef = useRef<mapboxgl.Marker>();
+  const [displayUpload, setDisplayUpload] = useState<any>();
 
-  
+  const location = useLocation();
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -44,6 +50,29 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
 
     // return () => mapRef.current?.remove();
   }, []);
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Remove markers
+    originMarkerRef.current?.remove();
+
+    destinationMarkerRef.current?.remove();
+    originMarkerRef.current?.remove();
+    rangeMarkerRef.current?.remove();
+    const layerId = "LineString-layer";
+    const sourceId = "LineString";
+
+    if (mapRef.current.getLayer(layerId)) {
+      mapRef.current.removeLayer(layerId);
+    }
+    if (mapRef.current.getSource(sourceId)) {
+      mapRef.current.removeSource(sourceId);
+    }
+
+    //   .forEach(element => {
+
+    //   });
+  }, [location]);
   return (
     <RoutingContext.Provider
       value={{
@@ -51,7 +80,9 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
         mapRef,
         originMarkerRef,
         destinationMarkerRef,
-        
+        rangeMarkerRef,
+        displayUpload,
+        setDisplayUpload,
       }}
     >
       {props.children}
