@@ -32,8 +32,7 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
   const destinationMarkerRef = useRef<mapboxgl.Marker>();
   const rangeMarkerRef = useRef<mapboxgl.Marker>();
   const [displayUpload, setDisplayUpload] = useState<any>();
-
-  const location = useLocation();
+  const location=useLocation()
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -48,31 +47,28 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
 
     mapRef.current.showTileBoundaries = true;
 
-    // return () => mapRef.current?.remove();
   }, []);
   useEffect(() => {
-    if (!mapRef.current) return;
 
-    // Remove markers
-    originMarkerRef.current?.remove();
+    // return () => {
+    //   if (!mapRef.current) return;
 
-    destinationMarkerRef.current?.remove();
-    originMarkerRef.current?.remove();
-    rangeMarkerRef.current?.remove();
-    const layerId = "LineString-layer";
-    const sourceId = "LineString";
+    //   destinationMarkerRef.current?.remove();
+    //   originMarkerRef.current?.remove();
+    //   rangeMarkerRef.current?.remove();
+    //   const layerId = "LineString-layer";
+    //   const sourceId = "LineString";
 
-    if (mapRef.current.getLayer(layerId)) {
-      mapRef.current.removeLayer(layerId);
-    }
-    if (mapRef.current.getSource(sourceId)) {
-      mapRef.current.removeSource(sourceId);
-    }
+      // if (mapRef.current.getLayer(layerId)) {
+      //   mapRef.current.removeLayer(layerId);
+      // }
+      // if (mapRef.current.getSource(sourceId)) {
+      //   mapRef.current.removeSource(sourceId);
+      // }
+    // };
 
-    //   .forEach(element => {
-
-    //   });
-  }, [location]);
+    
+  }, []);
   return (
     <RoutingContext.Provider
       value={{

@@ -17,21 +17,27 @@ function Sidebar() {
       if (markerType === "origin") {
         setOriginCoordinate([lng, lat]);
         if (originMarkerRef.current) {
+          // originMarkerRef.current.setLngLat([lng, lat]).addTo(mapRef.current);
           originMarkerRef.current.setLngLat([lng, lat]);
-        } else {
-          originMarkerRef.current = new mapboxgl.Marker({ color: "blue" })
-            .setLngLat([lng, lat])
-            .addTo(mapRef.current);
         }
+        // else {
+        //   originMarkerRef.current = new mapboxgl.Marker({ color: "blue" })
+        //     .setLngLat([lng, lat])
+        //     .addTo(mapRef.current);
+        // }
       } else if (markerType === "destination") {
         setDestinationCoordinate([lng, lat]);
         if (destinationMarkerRef.current) {
+          // destinationMarkerRef.current
+          //   .setLngLat([lng, lat])
+          //   .addTo(mapRef.current);
           destinationMarkerRef.current.setLngLat([lng, lat]);
-        } else {
-          destinationMarkerRef.current = new mapboxgl.Marker({ color: "red" })
-            .setLngLat([lng, lat])
-            .addTo(mapRef.current);
         }
+        //  else {
+        //   destinationMarkerRef.current = new mapboxgl.Marker({ color: "red" })
+        //     .setLngLat([lng, lat])
+        //     .addTo(mapRef.current);
+        // }
       }
     },
     [destinationMarkerRef, mapRef, markerType, originMarkerRef]
@@ -61,6 +67,23 @@ function Sidebar() {
       console.error("Error fetching route:", error.message);
     }
   };
+
+  
+  useEffect(() => {
+    if (!mapRef.current) return;
+    if (!destinationMarkerRef.current) {
+      originMarkerRef.current = new mapboxgl.Marker({ color: "blue" }).addTo(
+        mapRef.current
+      );
+    }
+
+  
+
+    return () => {
+      destinationMarkerRef.current?.remove();
+      originMarkerRef.current?.remove();
+    };
+  }, [destinationMarkerRef, originMarkerRef]);
 
   useEffect(() => {
     if (!mapRef.current) return;

@@ -15,3 +15,14 @@ body,
   width: 100px;
   height: 40px;
 }
+.uploadButton{
+  background-color: white;
+  /* max-width: 300px; */
+  height: 50px;
+  border-radius: 10px;
+  width: 70%;
+}
+.uploadButton:hover{
+  cursor: pointer;
+  background-color: rgba(245, 245, 245, 0.686);
+}

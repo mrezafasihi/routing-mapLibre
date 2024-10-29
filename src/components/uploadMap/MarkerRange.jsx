@@ -1,52 +1,45 @@
-import {  useCallback, useRef, useState } from "react";
+import { useCallback } from "react";
 import { useRoutingContext } from "../../context/RoutingContext";
 import mapboxgl from "mapbox-gl";
 import { checkIsPointInGeofenceRange } from "../../utils/api";
 
-
 function MarkerRange() {
-  const { mapRef,rangeMarkerRef } = useRoutingContext();
-  // const [isAddingMarker,setIsAddingMarker]=useState(false)
-//   useEffect(() => {
-//     const marker = new mapboxgl.Marker()
-//     .addTo(mapRef.current);
-//     rangeMarkerRef.current = marker
+  const { mapRef, rangeMarkerRef } = useRoutingContext();
+  //   useEffect(() => {
+  //     const marker = new mapboxgl.Marker()
+  //     .addTo(mapRef.current);
+  //     rangeMarkerRef.current = marker
 
-//   }, [mapRef])
+  //   }, [mapRef])
 
-const handleMapClick = useCallback(
-  (e) => {
-    // if (!isAddingMarker) return; 
+  const handleMapClick = useCallback(
+    (e) => {
 
-    const { lng, lat } = e.lngLat;
-    if (rangeMarkerRef.current) {
-      rangeMarkerRef.current.setLngLat([lng, lat]);
-    } 
-    else {
-      rangeMarkerRef.current = new mapboxgl.Marker()
-        .setLngLat([lng, lat])
-        .addTo(mapRef.current);
-    }
-    checkIsPointInGeofenceRange(lng, lat);
-   
+      const { lng, lat } = e.lngLat;
+      if (rangeMarkerRef.current) {
+        rangeMarkerRef.current.setLngLat([lng, lat]);
+      } else {
+        rangeMarkerRef.current = new mapboxgl.Marker()
+          .setLngLat([lng, lat])
+          .addTo(mapRef.current);
+      }
+      checkIsPointInGeofenceRange(lng, lat);
 
-    // setIsAddingMarker(false);
-    mapRef.current?.off("click", handleMapClick); 
-  },
-  [ mapRef, rangeMarkerRef]
-);
+      mapRef.current?.off("click", handleMapClick);
+    },
+    [ mapRef, rangeMarkerRef]
+  );
 
- const handleButtonClick=()=>{
-  // setIsAddingMarker(true);
-mapRef.current.on("click",handleMapClick)
- }
-  
- 
+  const handleButtonClick = () => {
+    mapRef.current.on("click", handleMapClick);
+  };
 
   return (
-    <button className="bg-white hover:cursor-pointer" onClick={handleButtonClick}>
-      is this in range
-    </button>
+    <>
+      <button className="uploadButton" onClick={handleButtonClick}>
+        is this in range
+      </button>
+    </>
   );
 }
 

@@ -18,3 +18,6 @@ const handleButtonClick = () => {
 
     mapRef.current.on("click", handleMapClick);
   };
+
+  
+  

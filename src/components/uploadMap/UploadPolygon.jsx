@@ -47,12 +47,12 @@ function UploadPolygon() {
   }, [fetchUploadData]);
   return (
     <>
-      <h4 className="text-white">
+      <h4 className="text-white ">
         the count of you upload: <p>{uploadCount}</p>{" "}
       </h4>
       <input
         type="file"
-        className="w-full text-white"
+        className=" text-white flex "
         onChange={requestUploadGeojson}
       />
     </>

@@ -13,7 +13,7 @@ function DeletePolygon() {
     mapRef.current.on("click", handleChooseDelete);
   };
   return (
-    <button className="bg-white" onClick={deletePolygonButton}>
+    <button className="uploadButton " onClick={deletePolygonButton}>
       DeletePolygon
     </button>
   );
