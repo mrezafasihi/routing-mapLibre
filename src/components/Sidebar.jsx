@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { useRoutingContext } from "../context/RoutingContext";
 import { apiKey } from "../constants";
+import MapCleanUp from "../utils/MapCleanUp";
 
 function Sidebar() {
   const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
@@ -118,6 +119,7 @@ function Sidebar() {
   }, [geoRoute, mapRef]);
   return (
     <div className="flex flex-col w-[30%]">
+      <MapCleanUp markerRefs={[originMarkerRef, destinationMarkerRef]} />
       <button
         onClick={() => {
           setMarkerType("origin");
