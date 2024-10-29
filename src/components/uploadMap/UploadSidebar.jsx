@@ -16,7 +16,11 @@ function UploadSidebar() {
       if (!mapRef.current.getSource(sourceId)) {
         mapRef.current.addSource(sourceId, {
           type: "geojson",
-          data: { type: "Feature", geometry: item.boundary },
+          data: {
+            type: "Feature",
+            properties: { polygonId: item.id },
+            geometry: item.boundary,
+          },
         });
         mapRef.current.addLayer({
           id: layerId,

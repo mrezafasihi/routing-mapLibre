@@ -4,7 +4,6 @@ import { useRoutingContext } from "../../context/RoutingContext";
 
 function UploadPolygon() {
   const [uploadCount, setUploadCount] = useState(null);
-  const [idPolygon, setIdPolygon] = useState(null);
   const { setDisplayUpload } = useRoutingContext();
   const apiUrl = "https://map.ir/geofence/stages";
 
@@ -21,7 +20,7 @@ function UploadPolygon() {
         body: formData,
       });
       const data = await response.json();
-      setIdPolygon(data.id);
+      console.log(data);
     } catch (error) {
       alert(error.message);
       console.error("Error fetching route:", error.message);

@@ -6,7 +6,7 @@ import { checkIsPointInGeofenceRange } from "../../utils/api";
 
 function MarkerRange() {
   const { mapRef,rangeMarkerRef } = useRoutingContext();
-  const [isAddingMarker,setIsAddingMarker]=useState(false)
+  // const [isAddingMarker,setIsAddingMarker]=useState(false)
 //   useEffect(() => {
 //     const marker = new mapboxgl.Marker()
 //     .addTo(mapRef.current);
