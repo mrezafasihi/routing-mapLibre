@@ -4,7 +4,7 @@ import { useRoutingContext } from "../context/RoutingContext";
 import { apiKey } from "../constants";
 import MapCleanUp from "../utils/MapCleanUp";
 
-function Sidebar() {
+function RoutingSidebar() {
   const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
   const [markerType, setMarkerType] = useState(null);
   const [originCoordinate, setOriginCoordinate] = useState([]);
@@ -12,6 +12,7 @@ function Sidebar() {
   const [geoRoute, setGeoRoute] = useState(null);
   const SOURCE_ID = "LineString";
 
+  
   const handleMapClick = useCallback(
     (e) => {
       const { lng, lat } = e.lngLat;
@@ -66,13 +67,6 @@ function Sidebar() {
       console.error("Error fetching route:", error.message);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      destinationMarkerRef.current?.remove();
-      originMarkerRef.current?.remove();
-    };
-  }, [destinationMarkerRef, originMarkerRef]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -147,4 +141,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default RoutingSidebar;

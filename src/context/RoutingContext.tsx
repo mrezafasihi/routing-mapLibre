@@ -66,7 +66,7 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
       //   mapRef.current.removeSource(sourceId);
       // }
     // };
-
+  return()=>{mapRef.current?.remove()}
     
   }, []);
   return (

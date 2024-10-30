@@ -6,7 +6,6 @@ function DeletePolygon() {
 
   const handleChooseDelete = (e) => {
     const [selectedPolygon] = mapRef.current.queryRenderedFeatures(e.point);
-    console.log(selectedPolygon.properties.polygonId);
     deleteThePointSelected(selectedPolygon.properties.polygonId);
   };
   const deletePolygonButton = () => {

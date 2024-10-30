@@ -1,5 +1,5 @@
 import "./App.css";
-import Sidebar from "./components/Sidebar";
+import RoutingSidebar from "./components/RoutingSidebar";
 import MapSide from "./components/MapSide";
 import mapboxgl from "mapbox-gl";
 import Navbar from "./components/Navbar";
@@ -18,7 +18,7 @@ function App() {
     <div className="flex w-full h-full bg-black ">
       <Navbar />
       <Routes>
-        <Route path="/" element={<Sidebar />} />
+        <Route path="/" element={<RoutingSidebar />} />
         <Route path="/upload" element={<UploadSidebar />} />
       </Routes>
       <MapSide />

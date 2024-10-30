@@ -6,12 +6,7 @@ import MapCleanUp from "../../utils/MapCleanUp";
 
 function MarkerRange() {
   const { mapRef, rangeMarkerRef } = useRoutingContext();
-  //   useEffect(() => {
-  //     const marker = new mapboxgl.Marker()
-  //     .addTo(mapRef.current);
-  //     rangeMarkerRef.current = marker
 
-  //   }, [mapRef])
 
   const handleMapClick = useCallback(
     (e) => {

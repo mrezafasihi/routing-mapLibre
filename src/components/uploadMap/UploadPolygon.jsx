@@ -4,7 +4,7 @@ import { useRoutingContext } from "../../context/RoutingContext";
 
 function UploadPolygon() {
   const [uploadCount, setUploadCount] = useState(null);
-  const { setDisplayUpload } = useRoutingContext();
+  const { setDisplayUpload, mapRef } = useRoutingContext();
   const apiUrl = "https://map.ir/geofence/stages";
 
   const requestUploadGeojson = async (e) => {
@@ -19,14 +19,21 @@ function UploadPolygon() {
         },
         body: formData,
       });
+
       const data = await response.json();
+      if (response.ok) {
+        console.log("first");
+        await fetchDisplayPolygon();
+        mapRef.current.resize();
+      }
       console.log(data);
     } catch (error) {
       alert(error.message);
       console.error("Error fetching route:", error.message);
     }
   };
-  const fetchUploadData = useCallback(async () => {
+  const fetchDisplayPolygon = useCallback(async () => {
+    console.log("second");
     try {
       const response = await fetch(apiUrl, {
         method: "GET",
@@ -43,8 +50,9 @@ function UploadPolygon() {
     }
   }, [setDisplayUpload]);
   useEffect(() => {
-    fetchUploadData();
-  }, [fetchUploadData]);
+    fetchDisplayPolygon();
+  }, [fetchDisplayPolygon]);
+
   return (
     <>
       <h4 className="text-white ">
