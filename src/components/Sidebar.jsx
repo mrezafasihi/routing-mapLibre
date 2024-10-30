@@ -10,6 +10,7 @@ function Sidebar() {
   const [originCoordinate, setOriginCoordinate] = useState([]);
   const [destinationCoordinate, setDestinationCoordinate] = useState([]);
   const [geoRoute, setGeoRoute] = useState(null);
+  const SOURCE_ID = "LineString";
 
   const handleMapClick = useCallback(
     (e) => {
@@ -84,7 +85,7 @@ function Sidebar() {
   useEffect(() => {
     if (!geoRoute || !mapRef.current) return;
 
-    const SOURCE_ID = "LineString";
+    // const SOURCE_ID = "LineString";
 
     const existingSource = mapRef.current.getSource(SOURCE_ID);
 
@@ -119,7 +120,7 @@ function Sidebar() {
   }, [geoRoute, mapRef]);
   return (
     <div className="flex flex-col w-[30%]">
-      <MapCleanUp markerRefs={[originMarkerRef, destinationMarkerRef]} />
+      <MapCleanUp markerRefs={[originMarkerRef, destinationMarkerRef]} layerIds={["LineString-layer"]} sourceIds={[SOURCE_ID]}  />
       <button
         onClick={() => {
           setMarkerType("origin");

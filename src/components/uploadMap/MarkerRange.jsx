@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useRoutingContext } from "../../context/RoutingContext";
 import mapboxgl from "mapbox-gl";
 import { checkIsPointInGeofenceRange } from "../../utils/api";
+import MapCleanUp from "../../utils/MapCleanUp";
 
 function MarkerRange() {
   const { mapRef, rangeMarkerRef } = useRoutingContext();
@@ -17,7 +18,7 @@ function MarkerRange() {
 
       const { lng, lat } = e.lngLat;
       if (rangeMarkerRef.current) {
-        rangeMarkerRef.current.setLngLat([lng, lat]);
+        rangeMarkerRef.current.setLngLat([lng, lat]).addTo(mapRef.current);
       } else {
         rangeMarkerRef.current = new mapboxgl.Marker()
           .setLngLat([lng, lat])
@@ -36,6 +37,7 @@ function MarkerRange() {
 
   return (
     <>
+    <MapCleanUp markerRefs={[rangeMarkerRef]}/>
       <button className="uploadButton" onClick={handleButtonClick}>
         is this in range
       </button>

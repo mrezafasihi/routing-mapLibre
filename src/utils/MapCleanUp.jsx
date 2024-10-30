@@ -7,20 +7,25 @@ function MapCleanUp({ markerRefs = [], layerIds = [], sourceIds = [] }) {
   const { mapRef } = useRoutingContext();
   const location = useLocation();
   useEffect(() => {
-    if (!mapRef.current) return;
-    markerRefs?.forEach((item) => {
-      item.current?.remove();
-    });
-    layerIds.forEach((id) => {
-      if (mapRef.current.getLayer(id)) {
-        mapRef.current.removeLayer(id);
-      }
-    });
-    sourceIds.forEach((id) => {
-      if (mapRef.current.getSource(id)) {
-        mapRef.current.removeSource(id);
-      }
-    });
+
+    return()=>{ if (!mapRef.current) return;
+    
+      markerRefs?.forEach((item) => {
+        item.current?.remove();
+      });
+      layerIds.forEach((id) => {
+        console.log(id)
+        if (mapRef.current.getLayer(id)) {
+          mapRef.current.removeLayer(id);
+        }
+      });
+      sourceIds.forEach((id) => {
+        console.log(id)
+        if (mapRef.current.getSource(id)) {
+          mapRef.current.removeSource(id);
+        }
+      });}
+   
   }, [location]);
   return null;
 }
