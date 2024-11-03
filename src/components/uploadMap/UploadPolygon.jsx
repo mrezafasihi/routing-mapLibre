@@ -22,7 +22,6 @@ function UploadPolygon() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log("first");
         await fetchDisplayPolygon();
         mapRef.current.resize();
       }
@@ -33,7 +32,7 @@ function UploadPolygon() {
     }
   };
   const fetchDisplayPolygon = useCallback(async () => {
-    console.log("second");
+    // console.log("second");
     try {
       const response = await fetch(apiUrl, {
         method: "GET",

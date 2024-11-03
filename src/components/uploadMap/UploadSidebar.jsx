@@ -19,7 +19,6 @@ function UploadSidebar() {
   }, [displayUpload]);
   useEffect(() => {
     if (!displayUpload) return;
-    console.log(displayUpload);
     displayUpload?.forEach((item, index) => {
       const sourceId = `uploadPolygon-${index}`;
       const layerId = `uploadPolygon-fill-${index}`;
@@ -49,10 +48,10 @@ function UploadSidebar() {
   }, [displayUpload, mapRef]);
   return (
     <div className="flex flex-col w-[30%] h-screen space-y-4">
-      <MapCleanUp layerIds={layerIds} sourceIds={sourceIds} />
       <UploadPolygon />
       <MarkerRange />
       <DeletePolygon />
+      <MapCleanUp layerIds={layerIds} sourceIds={sourceIds} />
     </div>
   );
 }

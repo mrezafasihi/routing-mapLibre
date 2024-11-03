@@ -50,22 +50,8 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
   }, []);
   useEffect(() => {
 
-    // return () => {
-    //   if (!mapRef.current) return;
-
-    //   destinationMarkerRef.current?.remove();
-    //   originMarkerRef.current?.remove();
-    //   rangeMarkerRef.current?.remove();
-    //   const layerId = "LineString-layer";
-    //   const sourceId = "LineString";
-
-      // if (mapRef.current.getLayer(layerId)) {
-      //   mapRef.current.removeLayer(layerId);
-      // }
-      // if (mapRef.current.getSource(sourceId)) {
-      //   mapRef.current.removeSource(sourceId);
-      // }
-    // };
+    
+    
   return()=>{mapRef.current?.remove()}
     
   }, []);
