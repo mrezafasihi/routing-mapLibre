@@ -32,7 +32,6 @@ function UploadPolygon() {
     }
   };
   const fetchDisplayPolygon = useCallback(async () => {
-    // console.log("second");
     try {
       const response = await fetch(apiUrl, {
         method: "GET",

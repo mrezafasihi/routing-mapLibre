@@ -8,7 +8,6 @@ function MapCleanUp({ markerRefs = [], layerIds = [], sourceIds = [] }) {
   useEffect(() => {
     return () => {
       if (!mapRef.current) return;
-      console.log(markerRefs);
       markerRefs?.forEach((item) => {
         item.current?.remove();
       });
