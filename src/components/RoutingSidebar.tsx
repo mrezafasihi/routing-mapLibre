@@ -3,16 +3,29 @@ import mapboxgl from "mapbox-gl";
 import { useRoutingContext } from "../context/RoutingContext";
 import { apiKey } from "../constants";
 import MapCleanUp from "../utils/MapCleanUp";
+import useSWR from "swr";
 
 function RoutingSidebar() {
   const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
   const [markerType, setMarkerType] = useState(null);
   const [originCoordinate, setOriginCoordinate] = useState([]);
   const [destinationCoordinate, setDestinationCoordinate] = useState([]);
-  const [geoRoute, setGeoRoute] = useState(null);
+  const [urlRoute, setUrlRoute] = useState(null);
+  const {data:routeData}=useSWR(urlRoute,fetchRoute)
+  function fetchRoute(url) {
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+      },
+    }).then((res) => {
+      if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`);
+      return res.json();
+    });
+  }
   const SOURCE_ID = "LineString";
 
-  
   const handleMapClick = useCallback(
     (e) => {
       const { lng, lat } = e.lngLat;
@@ -48,24 +61,7 @@ function RoutingSidebar() {
 
     const apiUrl = `https://map.ir/routes/foot/v1/driving/${originLng},${originLat};${destinationLng},${destinationLat}?alternatives=true&steps=true&geometries=geojson`;
 
-    try {
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP Error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setGeoRoute(data.routes[0].geometry);
-    } catch (error) {
-      alert(error.message);
-      console.error("Error fetching route:", error.message);
-    }
+    setUrlRoute(apiUrl);
   };
 
   useEffect(() => {
@@ -77,9 +73,9 @@ function RoutingSidebar() {
   }, [handleMapClick, mapRef, markerType]);
 
   useEffect(() => {
-    if (!geoRoute || !mapRef.current) return;
+    if (!routeData || !mapRef.current) return;
 
-    // const SOURCE_ID = "LineString";
+    const geoRoute = routeData.routes[0].geometry; // Access the geometry here
 
     const existingSource = mapRef.current.getSource(SOURCE_ID);
 
@@ -111,10 +107,14 @@ function RoutingSidebar() {
         },
       });
     }
-  }, [geoRoute, mapRef]);
+  }, [routeData, mapRef]);
   return (
     <div className="flex flex-col w-[30%]">
-      <MapCleanUp markerRefs={[originMarkerRef, destinationMarkerRef]} layerIds={["LineString-layer"]} sourceIds={[SOURCE_ID]}  />
+      <MapCleanUp
+        markerRefs={[originMarkerRef, destinationMarkerRef]}
+        layerIds={["LineString-layer"]}
+        sourceIds={[SOURCE_ID]}
+      />
       <button
         onClick={() => {
           setMarkerType("origin");

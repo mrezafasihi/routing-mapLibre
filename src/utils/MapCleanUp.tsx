@@ -1,9 +1,7 @@
 import { useRoutingContext } from "../context/RoutingContext";
 import { useEffect } from "react";
 
-// type MapCleanUpProps={
-//   markerRefs?:MutableRefObject<mapboxgl.Marker | undefined>[]
-// }
+
 
 function MapCleanUp({
   markerRefs = [],
@@ -16,6 +14,8 @@ function MapCleanUp({
 }) {
   const { mapRef } = useRoutingContext();
 
+  // clean up marker
+
   useEffect(() => {
     return () => {
       if (!mapRef?.current) return;
@@ -23,7 +23,7 @@ function MapCleanUp({
         item.current?.remove();
       });
     };
-  }, [mapRef, markerRefs]);
+  }, [mapRef]);
 
   // clean up sources and layers added to map
   useEffect(() => {
