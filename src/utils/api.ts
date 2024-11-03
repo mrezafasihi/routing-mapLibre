@@ -27,7 +27,7 @@ export const checkIsPointInGeofenceRange = async (lng, lat) => {
     const apiUrl = `https://map.ir/geofence/stages/${id}`;
     try {
       const response = await fetch(apiUrl, {
-        method: "DEL",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           "x-api-key": apiKey,

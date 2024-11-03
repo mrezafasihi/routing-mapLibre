@@ -2,17 +2,18 @@ import { useCallback, useEffect, useState } from "react";
 import { apiKey } from "../../constants";
 import { useRoutingContext } from "../../context/RoutingContext";
 
+const STAGES_API_URL = "https://map.ir/geofence/stages";
+
 function UploadPolygon() {
   const [uploadCount, setUploadCount] = useState(null);
-  const { setDisplayUpload, mapRef } = useRoutingContext();
-  const apiUrl = "https://map.ir/geofence/stages";
+  const { setDisplayUpload } = useRoutingContext();
 
   const requestUploadGeojson = async (e) => {
     const geoJsonFile = e.target.files[0];
     const formData = new FormData();
     formData.append("polygons", geoJsonFile);
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(STAGES_API_URL, {
         method: "POST",
         headers: {
           "x-api-key": apiKey,
@@ -23,7 +24,6 @@ function UploadPolygon() {
       const data = await response.json();
       if (response.ok) {
         await fetchDisplayPolygon();
-        mapRef.current.resize();
       }
       console.log(data);
     } catch (error) {
@@ -33,7 +33,7 @@ function UploadPolygon() {
   };
   const fetchDisplayPolygon = useCallback(async () => {
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(STAGES_API_URL, {
         method: "GET",
         headers: {
           "x-api-key": apiKey,
