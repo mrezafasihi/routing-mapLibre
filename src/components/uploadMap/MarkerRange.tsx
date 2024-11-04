@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useRoutingContext } from "../../context/RoutingContext";
 import mapboxgl from "mapbox-gl";
 import { checkIsPointInGeofenceRange } from "../../utils/api";
@@ -7,32 +7,32 @@ import MapCleanUp from "../../utils/MapCleanUp";
 function MarkerRange() {
   const { mapRef, rangeMarkerRef } = useRoutingContext();
 
-
   const handleMapClick = useCallback(
     (e) => {
-
       const { lng, lat } = e.lngLat;
-      if (rangeMarkerRef.current) {
-        rangeMarkerRef.current.setLngLat([lng, lat]).addTo(mapRef.current);
-      } else {
-        rangeMarkerRef.current = new mapboxgl.Marker()
-          .setLngLat([lng, lat])
-          .addTo(mapRef.current);
-      }
-      checkIsPointInGeofenceRange(lng, lat);
+      if (mapRef?.current) {
+        if (!rangeMarkerRef) {
+          return;
+        }
+        if (!rangeMarkerRef?.current) {
+          rangeMarkerRef.current = new mapboxgl.Marker();
+        }
 
-      mapRef.current?.off("click", handleMapClick);
+        rangeMarkerRef?.current.setLngLat([lng, lat]).addTo(mapRef.current);
+        checkIsPointInGeofenceRange(lng, lat);
+        mapRef.current.off("click", handleMapClick);
+      }
     },
-    [ mapRef, rangeMarkerRef]
+    [mapRef, rangeMarkerRef]
   );
 
   const handleButtonClick = () => {
-    mapRef.current.on("click", handleMapClick);
+    mapRef?.current?.on("click", handleMapClick);
   };
 
   return (
     <>
-    <MapCleanUp markerRefs={[rangeMarkerRef]}/>
+      <MapCleanUp markerRefs={[rangeMarkerRef]} />
       <button className="uploadButton" onClick={handleButtonClick}>
         is this in range
       </button>

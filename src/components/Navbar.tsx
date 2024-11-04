@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -9,9 +10,7 @@ function Navbar() {
       <button className="navbarButton">
         <Link to={"/upload"}>upload</Link>
       </button>
-      <button className="navbarButton">
-       search
-      </button>
+      <button className="navbarButton">search</button>
     </div>
   );
 }

@@ -1,9 +1,9 @@
+import React from "react";
 import { useRoutingContext } from "../context/RoutingContext";
 
 function MapSide() {
-  const { mapContainerRef} =
-    useRoutingContext();
-    
+  const { mapContainerRef } = useRoutingContext();
+
   return (
     <div
       ref={mapContainerRef}

@@ -1,3 +1,4 @@
+import React from "react";
 import { useCallback, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { useRoutingContext } from "../context/RoutingContext";
@@ -11,7 +12,7 @@ function RoutingSidebar() {
   const [originCoordinate, setOriginCoordinate] = useState([]);
   const [destinationCoordinate, setDestinationCoordinate] = useState([]);
   const [urlRoute, setUrlRoute] = useState(null);
-  const {data:routeData}=useSWR(urlRoute,fetchRoute)
+  const { data: routeData } = useSWR(urlRoute, fetchRoute);
   function fetchRoute(url) {
     return fetch(url, {
       method: "GET",

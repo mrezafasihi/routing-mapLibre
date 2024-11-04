@@ -8,9 +8,9 @@ function MapCleanUp({
   layerIds = [],
   sourceIds = [],
 }: {
-  markerRefs: any[];
-  layerIds: string[];
-  sourceIds: string[];
+  markerRefs?: any[];
+  layerIds?: string[];
+  sourceIds?: string[];
 }) {
   const { mapRef } = useRoutingContext();
 
