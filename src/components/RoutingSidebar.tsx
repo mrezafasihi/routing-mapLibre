@@ -1,17 +1,17 @@
 import React from "react";
 import { useCallback, useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl";
 import { useRoutingContext } from "../context/RoutingContext";
 import { apiKey } from "../constants";
 import MapCleanUp from "../utils/MapCleanUp";
 import useSWR from "swr";
+import { Marker } from "maplibre-gl";
 
 function RoutingSidebar() {
   const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
-  const [markerType, setMarkerType] = useState(null);
-  const [originCoordinate, setOriginCoordinate] = useState([]);
-  const [destinationCoordinate, setDestinationCoordinate] = useState([]);
-  const [urlRoute, setUrlRoute] = useState(null);
+  const [markerType, setMarkerType] = useState<string|null>(null);
+  const [originCoordinate, setOriginCoordinate] = useState<string[]>([]);
+  const [destinationCoordinate, setDestinationCoordinate] = useState<string[]>([]);
+  const [urlRoute, setUrlRoute] = useState<string|null>(null);
   const { data: routeData } = useSWR(urlRoute, fetchRoute);
   function fetchRoute(url) {
     return fetch(url, {
@@ -30,25 +30,25 @@ function RoutingSidebar() {
   const handleMapClick = useCallback(
     (e) => {
       const { lng, lat } = e.lngLat;
-
+      if (!mapRef.current) return;
       if (markerType === "origin") {
         setOriginCoordinate([lng, lat]);
-        if (originMarkerRef.current) {
+        if (originMarkerRef?.current) {
           originMarkerRef.current.setLngLat([lng, lat]).addTo(mapRef.current);
         } else {
-          originMarkerRef.current = new mapboxgl.Marker({ color: "blue" })
+          originMarkerRef.current = new Marker({ color: "blue" })
             .setLngLat([lng, lat])
             .addTo(mapRef.current);
         }
       } else if (markerType === "destination") {
         setDestinationCoordinate([lng, lat]);
-        if (destinationMarkerRef.current) {
+        if (destinationMarkerRef?.current) {
           destinationMarkerRef.current
             .setLngLat([lng, lat])
             .addTo(mapRef.current);
           destinationMarkerRef.current.setLngLat([lng, lat]);
         } else {
-          destinationMarkerRef.current = new mapboxgl.Marker({ color: "red" })
+          destinationMarkerRef.current = new Marker({ color: "red" })
             .setLngLat([lng, lat])
             .addTo(mapRef.current);
         }
@@ -69,16 +69,16 @@ function RoutingSidebar() {
     if (!mapRef.current) return;
     mapRef.current.on("click", handleMapClick);
     return () => {
-      mapRef.current.off("click", handleMapClick);
+      mapRef?.current?.off("click", handleMapClick);
     };
   }, [handleMapClick, mapRef, markerType]);
 
   useEffect(() => {
-    if (!routeData || !mapRef.current) return;
+    if (!routeData || !mapRef?.current) return;
 
-    const geoRoute = routeData.routes[0].geometry; // Access the geometry here
+    const geoRoute = routeData.routes[0].geometry; 
 
-    const existingSource = mapRef.current.getSource(SOURCE_ID);
+    const existingSource = mapRef.current.getSource(SOURCE_ID) ;
 
     if (existingSource) {
       existingSource.setData({

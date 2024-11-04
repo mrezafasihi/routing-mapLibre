@@ -9,35 +9,35 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { useLocation } from "react-router-dom";
 import { apiKey, urlTransformRequest } from "../constants";
+import { IDisplayUploadItem } from "../utils/types";
 interface IRoutingContext {
-  mapContainerRef?: MutableRefObject<HTMLDivElement | undefined>;
-  mapRef?: MutableRefObject<mapboxgl.Map | undefined>;
-  originMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
-  destinationMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
-  rangeMarkerRef?: MutableRefObject<mapboxgl.Marker | undefined>;
-  displayUpload?: |undefined;
-  setDisplayUpload?: Dispatch<React.SetStateAction<any>>;
+  mapContainerRef: MutableRefObject<HTMLDivElement | null>;
+  mapRef: MutableRefObject<maplibregl.Map | undefined>;
+  originMarkerRef: MutableRefObject<maplibregl.Marker | undefined>;
+  destinationMarkerRef: MutableRefObject<maplibregl.Marker | undefined>;
+  rangeMarkerRef: MutableRefObject<maplibregl.Marker | undefined>;
+  displayUpload: IDisplayUploadItem[]|undefined;
+  setDisplayUpload: Dispatch<React.SetStateAction<IDisplayUploadItem[] | undefined>>;
 }
 
-export const RoutingContext = createContext<IRoutingContext>({});
+export const RoutingContext = createContext<IRoutingContext>({} as any);
 
 const RoutingContextProvider = (props: { children: ReactNode }) => {
-  const mapContainerRef = useRef<HTMLDivElement>();
-  const mapRef = useRef<mapboxgl.Map>();
-  const originMarkerRef = useRef<mapboxgl.Marker>();
-  const destinationMarkerRef = useRef<mapboxgl.Marker>();
-  const rangeMarkerRef = useRef<mapboxgl.Marker>();
-  const [displayUpload, setDisplayUpload] = useState<mapboxgl.Map>();
-  const location = useLocation();
+  const mapContainerRef = useRef<HTMLDivElement | null>(null); 
+  const mapRef = useRef<maplibregl.Map>();
+  const originMarkerRef = useRef<maplibregl.Marker>();
+  const destinationMarkerRef = useRef<maplibregl.Marker>();
+  const rangeMarkerRef = useRef<maplibregl.Marker>();
+  const [displayUpload, setDisplayUpload] = useState<IDisplayUploadItem[]>();
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    mapRef.current = new mapboxgl.Map({
+    mapRef.current = new maplibregl.Map({
       container: mapContainerRef.current,
       style: "https://map.ir/vector/styles/main/mapir-Dove-style.json",
       center: [51.406979760871764, 35.751287287982706],

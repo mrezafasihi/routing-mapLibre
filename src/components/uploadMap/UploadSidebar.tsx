@@ -18,13 +18,13 @@ function UploadSidebar() {
     return { layerIds, sourceIds };
   }, [displayUpload]);
   useEffect(() => {
-    if (!displayUpload) return;
+    if (!displayUpload && !mapRef.current) return;
     displayUpload?.forEach((item, index) => {
       const sourceId = `uploadPolygon-${index}`;
       const layerId = `uploadPolygon-fill-${index}`;
 
-      if (!mapRef.current.getSource(sourceId)) {
-        mapRef.current.addSource(sourceId, {
+      if (!mapRef.current?.getSource(sourceId)) {
+        mapRef?.current?.addSource(sourceId, {
           type: "geojson",
           data: {
             type: "Feature",
@@ -32,7 +32,7 @@ function UploadSidebar() {
             geometry: item.boundary,
           },
         });
-        mapRef.current.addLayer({
+        mapRef.current?.addLayer({
           id: layerId,
           type: "fill",
           source: sourceId,
@@ -43,7 +43,6 @@ function UploadSidebar() {
           },
         });
       }
-      mapRef.current.triggerRepaint();
     });
   }, [displayUpload, mapRef]);
   return (

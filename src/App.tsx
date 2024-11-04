@@ -1,29 +1,24 @@
 import "./App.css";
-import React from 'react';
+import React from "react";
 import RoutingSidebar from "./components/RoutingSidebar";
 import MapSide from "./components/MapSide";
-import mapboxgl from "mapbox-gl";
 import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import UploadSidebar from "./components/uploadMap/UploadSidebar";
-
-mapboxgl.accessToken ="pk.eyJ1IjoicHJvdGFyZ2V0IiwiYSI6ImNtMmZ6c3c4ajBlbWcycXNhOGRqN2tvdWcifQ.mlPpxj_f7imo_T4Z7Ea_rw"
-mapboxgl.setRTLTextPlugin(
-  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.3.0/mapbox-gl-rtl-text.js",
-  null,
-  true
-);
+import { SWRConfig } from "swr";
+import swrConfig from "./utils/swrConfig";
 
 function App() {
   return (
     <div className="flex w-full h-full bg-black ">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<RoutingSidebar />} />
-        <Route path="/upload" element={<UploadSidebar />} />
-      </Routes>
-      <MapSide />
-     
+      <SWRConfig value={swrConfig}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<RoutingSidebar />} />
+          <Route path="/upload" element={<UploadSidebar />} />
+        </Routes>
+        <MapSide />
+      </SWRConfig>
     </div>
   );
 }

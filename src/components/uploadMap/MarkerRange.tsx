@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
 import { useRoutingContext } from "../../context/RoutingContext";
-import mapboxgl from "mapbox-gl";
+import maplibre from "mapbox-gl";
 import { checkIsPointInGeofenceRange } from "../../utils/api";
 import MapCleanUp from "../../utils/MapCleanUp";
+import { Marker } from "maplibre-gl";
 
 function MarkerRange() {
   const { mapRef, rangeMarkerRef } = useRoutingContext();
@@ -15,10 +16,10 @@ function MarkerRange() {
           return;
         }
         if (!rangeMarkerRef?.current) {
-          rangeMarkerRef.current = new mapboxgl.Marker();
+          rangeMarkerRef.current = new Marker();
         }
 
-        rangeMarkerRef?.current.setLngLat([lng, lat]).addTo(mapRef.current);
+        rangeMarkerRef?.current?.setLngLat([lng, lat]).addTo(mapRef.current);
         checkIsPointInGeofenceRange(lng, lat);
         mapRef.current.off("click", handleMapClick);
       }
