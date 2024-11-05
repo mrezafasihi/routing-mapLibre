@@ -23,10 +23,12 @@ export const checkIsPointInGeofenceRange = async (lng, lat) => {
   }
 };
 
-export const deleteThePointSelected = async (id) => {
-  const apiUrl = `https://map.ir/geofence/stages/${id}`;
+export const deleteThePointSelected = async (id, setIsDeleteing) => {
+  // [x]: use a better name!!!!!!!!! apiUrl is so freaking general. be more specific.
+  const apiUrlForDisplayPolygon = `https://map.ir/geofence/stages/${id}`;
+
   try {
-    const response = await fetch(apiUrl, {
+    const response = await fetch(apiUrlForDisplayPolygon, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -42,6 +44,7 @@ export const deleteThePointSelected = async (id) => {
   } catch (error) {
     alert(error);
     console.error("Error fetching route:", error.message);
+  } finally {
+    setIsDeleteing(false);
   }
 };
-

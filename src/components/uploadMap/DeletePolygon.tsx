@@ -1,30 +1,42 @@
 import React, { useState } from "react";
 import { useRoutingContext } from "../../context/RoutingContext";
 import { deleteThePointSelected } from "../../utils/api";
-import useSWR,{mutate} from "swr";
+import useGeofenceStages from "../../hooks/useGeofenceStages";
+
+// [x]: write a wrapper for the swr call that gets /stages. (useGeofenceStages)
+// result: const { stages, isStagesLoading, mutateStages } = useGeofenceStages()
 
 function DeletePolygon() {
   const { mapRef } = useRoutingContext();
-  const [polygonId,setPolygonId]=useState<number>()
-  // const {data,error}=useSWR(polygonId ? `https://map.ir/geofence/stages/${polygonId}` : null)
-  
-  const handleChooseDelete = (e) => {
+  const { mutateStages } = useGeofenceStages();
+  const [isDeleting, setIsDeleteing] = useState(false);
+  const handleChooseDelete = async (e) => {
     if (!mapRef?.current) return;
 
     const [selectedPolygon] = mapRef.current.queryRenderedFeatures(e.point);
-    mapRef.current.off("click", handleChooseDelete);
-    deleteThePointSelected(selectedPolygon.properties?.polygonId);
-    // setPolygonId(selectedPolygon.properties?.polygonId)
-    mutate(`https://map.ir/geofence/stages`);
 
+    // [x]: add async await you silly goose
+    // [x]: also add loading state (maybe a 'loading...' string below the button)
+    await deleteThePointSelected(
+      selectedPolygon.properties?.polygonId,
+      setIsDeleteing
+    );
+    console.log("first");
+    // [x]: mutate returns a promise.
+    await mutateStages();
+    mapRef.current.off("click", handleChooseDelete);
   };
+
   const deletePolygonButton = () => {
     mapRef?.current?.on("click", handleChooseDelete);
   };
   return (
-    <button className="uploadButton " onClick={deletePolygonButton}>
-      DeletePolygon
-    </button>
+    <>
+      <button className="uploadButton " onClick={deletePolygonButton}>
+        Delete Polygon
+      </button>
+      {isDeleting && <p>loading ...</p>}
+    </>
   );
 }
 

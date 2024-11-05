@@ -5,26 +5,34 @@ import { apiKey } from "../constants";
 import MapCleanUp from "../utils/MapCleanUp";
 import useSWR from "swr";
 import { Marker } from "maplibre-gl";
+import { GeoJSONSource } from "maplibre-gl";
+
+// function fetchRoute(url) {
+//   return fetch(url, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "x-api-key": apiKey,
+//     },
+//   }).then((res) => {
+//     console.log(res)
+//     if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`);
+//     return res.json();
+//   });
+// }
 
 function RoutingSidebar() {
   const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
-  const [markerType, setMarkerType] = useState<string|null>(null);
+  const [markerType, setMarkerType] = useState<string | null>(null);
   const [originCoordinate, setOriginCoordinate] = useState<string[]>([]);
-  const [destinationCoordinate, setDestinationCoordinate] = useState<string[]>([]);
-  const [urlRoute, setUrlRoute] = useState<string|null>(null);
-  const { data: routeData } = useSWR(urlRoute, fetchRoute);
-  function fetchRoute(url) {
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-      },
-    }).then((res) => {
-      if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`);
-      return res.json();
-    });
-  }
+  const [destinationCoordinate, setDestinationCoordinate] = useState<string[]>(
+    []
+  );
+  const [urlRoute, setUrlRoute] = useState<string | null>(null);
+
+  const { data: routeData } = useSWR(urlRoute);
+
+
   const SOURCE_ID = "LineString";
 
   const handleMapClick = useCallback(
@@ -76,20 +84,22 @@ function RoutingSidebar() {
   useEffect(() => {
     if (!routeData || !mapRef?.current) return;
 
-    const geoRoute = routeData.routes[0].geometry; 
+    const geoRoute = routeData.routes[0].geometry;
 
-    const existingSource = mapRef.current.getSource(SOURCE_ID) ;
+    const existingSource = mapRef.current.getSource(SOURCE_ID)as GeoJSONSource;
 
     if (existingSource) {
       existingSource.setData({
         type: "Feature",
         geometry: geoRoute,
+        properties: {},
       });
     } else {
       mapRef.current.addSource(SOURCE_ID, {
         type: "geojson",
         data: {
           type: "Feature",
+          properties: {},
           geometry: geoRoute,
         },
       });
