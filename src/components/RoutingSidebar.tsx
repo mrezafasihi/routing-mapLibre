@@ -1,25 +1,11 @@
 import React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useRoutingContext } from "../context/RoutingContext";
-import { apiKey } from "../constants";
 import MapCleanUp from "../utils/MapCleanUp";
 import useSWR from "swr";
 import { Marker } from "maplibre-gl";
 import { GeoJSONSource } from "maplibre-gl";
-
-// function fetchRoute(url) {
-//   return fetch(url, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-api-key": apiKey,
-//     },
-//   }).then((res) => {
-//     console.log(res)
-//     if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`);
-//     return res.json();
-//   });
-// }
+import { IRouteDataResponse } from "../utils/types";
 
 function RoutingSidebar() {
   const { mapRef, originMarkerRef, destinationMarkerRef } = useRoutingContext();
@@ -30,9 +16,9 @@ function RoutingSidebar() {
   );
   const [urlRoute, setUrlRoute] = useState<string | null>(null);
 
-  const { data: routeData } = useSWR(urlRoute);
+  const { data: routeData } = useSWR<IRouteDataResponse>(urlRoute);
 
-
+  console.log(routeData);
   const SOURCE_ID = "LineString";
 
   const handleMapClick = useCallback(
@@ -86,7 +72,7 @@ function RoutingSidebar() {
 
     const geoRoute = routeData.routes[0].geometry;
 
-    const existingSource = mapRef.current.getSource(SOURCE_ID)as GeoJSONSource;
+    const existingSource = mapRef.current.getSource(SOURCE_ID) as GeoJSONSource;
 
     if (existingSource) {
       existingSource.setData({
@@ -130,7 +116,7 @@ function RoutingSidebar() {
         onClick={() => {
           setMarkerType("origin");
         }}
-        className={`px-6 py-2  text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring`}
+        className={`px-6 py-2 text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring`}
       >
         Origin
       </button>
@@ -138,13 +124,13 @@ function RoutingSidebar() {
         onClick={() => {
           setMarkerType("destination");
         }}
-        className="px-6 py-2  text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
+        className="px-6 py-2 text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
       >
         Destination
       </button>
       <button
         onClick={findRoute}
-        className="px-6 py-2  text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
+        className="px-6 py-2 text-center text-violet-600 border border-violet-600 rounded hover:bg-violet-600 hover:text-white active:bg-indigo-500 focus:outline-none focus:ring"
       >
         Find
       </button>

@@ -10,3 +10,21 @@ export interface IBoundary {
     created_at: string;
     updated_at: string;
   }
+  
+  export interface IStagePolygonResponse{
+    "odata.count":number,
+    value:IDisplayUploadItem[]
+
+  }
+  export interface IRoute{
+    geometry:{
+      coordinates:number[][]
+      type:"LineString"
+      properties:{}
+    }
+  }
+
+  export interface IRouteDataResponse{
+    routes:IRoute[]
+  }
+ 

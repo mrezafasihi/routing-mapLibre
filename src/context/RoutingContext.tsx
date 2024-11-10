@@ -9,7 +9,7 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import maplibregl from "maplibre-gl";
+import maplibregl, { setRTLTextPlugin } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useLocation } from "react-router-dom";
 import { apiKey, urlTransformRequest } from "../constants";
@@ -34,8 +34,14 @@ const RoutingContextProvider = (props: { children: ReactNode }) => {
   const rangeMarkerRef = useRef<maplibregl.Marker>();
   const [displayUpload, setDisplayUpload] = useState<IDisplayUploadItem[]>();
 
+  setRTLTextPlugin(
+    'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+   true
+  );
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
+   
 
     mapRef.current = new maplibregl.Map({
       container: mapContainerRef.current,

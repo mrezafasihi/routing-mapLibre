@@ -1,21 +1,19 @@
+import { Marker } from "maplibre-gl";
 import { useRoutingContext } from "../context/RoutingContext";
-import { useEffect } from "react";
-
-
+import { RefObject, useEffect } from "react";
 
 function MapCleanUp({
   markerRefs = [],
   layerIds = [],
   sourceIds = [],
 }: {
-  markerRefs?: any[];
+  markerRefs?: RefObject<Marker | undefined>[];
   layerIds?: string[];
   sourceIds?: string[];
 }) {
   const { mapRef } = useRoutingContext();
 
-  // clean up marker
-
+  // clean up marker added to map
   useEffect(() => {
     return () => {
       if (!mapRef?.current) return;

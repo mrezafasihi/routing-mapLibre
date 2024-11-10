@@ -4,16 +4,15 @@ import { useRoutingContext } from "../../context/RoutingContext";
 // [x]: don't use the global mutate function (unless you have good reason to do so).
 // there's a better alternative which is returned by the useSWR hook. SEE THE DOCS.
 // learn about the swr cache key.
-import useSWR from "swr";
 import useGeofenceStages from "../../hooks/useGeofenceStages";
 
 const STAGES_API_URL = "https://map.ir/geofence/stages";
 
 function UploadPolygon() {
-  const [uploadCount, setUploadCount] = useState(null);
+  const [uploadCount, setUploadCount] = useState<number|null>(null);
   const { setDisplayUpload } = useRoutingContext();
-  // const { data: polygon ,mutate} = useSWR(STAGES_API_URL);
   const { stages: polygon, mutateStages } = useGeofenceStages();
+  console.log(polygon)
   const requestUploadGeojson = async (e) => {
     const geoJsonFile = e.target.files[0];
     const formData = new FormData();

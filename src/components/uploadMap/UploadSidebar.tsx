@@ -4,7 +4,6 @@ import MarkerRange from "./MarkerRange";
 import DeletePolygon from "./DeletePolygon";
 import UploadPolygon from "./UploadPolygon";
 import MapCleanUp from "../../utils/MapCleanUp";
-import useSWR from "swr";
 import useGeofenceStages from "../../hooks/useGeofenceStages";
 
 function UploadSidebar() {
